@@ -30,6 +30,7 @@ abstract = soup.find('blockquote', class_='abstract mathjax')
 
 # Extract the citations -------------------------
 references = []
+nonMLA_references = []
 
 #number of references
 total_references = 1
@@ -65,8 +66,11 @@ while (True):
             
             total_references += 1
 
-        #runs when reference can not be written in MLA format
+        #runs when reference is unavailable
         except:
+            #outputs non MLA citation
+            references_containers = driver.find_element("xpath", "/html/body/div[2]/main/div/div/div[3]/div/div[1]/div[2]/div/div[2]/div[1]/div[3]/div[%s]/div[2]/div[1]/a" % total_references)
+            nonMLA_references.append(references_containers.text)
             total_references += 1
 
     #outputs total number of ciations
@@ -84,3 +88,5 @@ print('#############################')
 print('Abstract:', abstract.text)
 print('#############################')
 print('References:', references)
+print('#############################')
+print('Non MLA References:', nonMLA_references)
