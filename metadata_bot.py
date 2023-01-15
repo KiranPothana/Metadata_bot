@@ -31,6 +31,7 @@ abstract = soup.find('blockquote', class_='abstract mathjax')
 # Extract the citations -------------------------
 references = []
 nonMLA_references = []
+bibTeX_references = []
 
 #number of references
 total_references = 1
@@ -50,8 +51,14 @@ while (True):
 
             #click MLA button
             references_containers = driver.find_element("xpath", "//input[@id='mla']")
-            references_containers.click()
-            time.sleep(1)
+            if references_containers.is_enabled():
+                references_containers.click()
+                time.sleep(1)
+            
+            #If MLA button is unavailable -> send to bibTeX_references
+            else:
+                references_containers = driver.find_element("xpath", "/html/body/div[2]/main/div/div/div[2]/div[7]/div/div/div[3]/textarea")
+                bibTeX_references.append(references_containers.text)
 
             #get citation
             references_containers = driver.find_element("xpath", "/html/body/div[2]/main/div/div/div[2]/div[7]/div/div/div[3]/textarea")
@@ -90,3 +97,5 @@ print('#############################')
 print('References:', references)
 print('#############################')
 print('Non MLA References:', nonMLA_references)
+print('#############################')
+print('BibTeX References:', bibTeX_references)
